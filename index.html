@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.0</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f4f4f9;
+            color: #333;
+            height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background-color: #121212;
+            color: #f4f4f9;
+        }
+
+        h1 {
+            margin-top: 20px;
+            color: #4CAF50;
+        }
+
+        textarea {
+            width: 80%;
+            height: 200px;
+            margin-bottom: 20px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        textarea.dark-mode {
+            background-color: #2b2b2b;
+            color: #f4f4f9;
+            border-color: #555;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: #45a049;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .output-container {
+            width: 80%;
+            margin: 20px 0;
+        }
+
+        .output-container p {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #080808;
+            margin-bottom: 10px;
+            white-space: pre-wrap;
+        }
+
+        .chunk-navigation {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .chunk-navigation button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .chunk-info {
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .dark-mode-toggle {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .dark-mode-toggle.dark-mode {
+            background-color: #555;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>BETA</h1>
+    <textarea id="inputText" placeholder="Enter your text here..."></textarea>
+    <button onclick="splitTextWithSpacing()">Split Text with Spacing</button>
+    <button style="margin-top: 20px;" onclick="copyEntireText()">Copy Entire</button>
+
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+
+    <div class="output-container" id="outputContainer"></div>
+
+    <script>
+        let chunks = [];
+        let currentChunkIndex = 0;
+
+        const wordMap = {
+
+
+            "hard": "strong", 
+            "boobs": "bub",
+            "jerk": "jrk",
+            "hard": "strong",
+"booby": "buby",
+"boobies": "bubies",
+            "chest": "ch-st",
+            
+
+"beautiful": "appealing", 
+
+"breasts": "mellons", 
+
+"nipples": "kneeples", 
+
+"penis": "pp", 
+
+"vagina": "kitty", 
+
+"thrust": "move", 
+
+"kiss": "embrace", 
+
+"moan": "sigh", 
+
+"pant": "breathe", 
+
+"climax": "peak", 
+
+"orgasm": "joy", 
+
+"sex": "love", 
+            
+"sexy": "secy", 
+                      "Orgy" : "orgg" ,
+
+"make love": "connect", 
+            "_": "", 
+            
+
+"erotic": "intimate", 
+
+"seduce": "charm", 
+
+"desire": "longing", 
+
+"fantasize": "dream", 
+
+"seduction": "charm", 
+
+"libido": "energy", 
+
+"arousal": "excitement", 
+                      "cunt" : "cnt" ,
+
+"ecstasy": "joy", 
+                      "Fuckin" : "f in" ,
+"Fuckwad" : "f wad" ,
+
+    "sex": "sec", 
+                      "Dicks" : "D-" ,
+"Fucked" : "f" ,
+"Fucks" : "f" ,
+
+    "fuck": "F-", 
+
+    "breast": "melons", 
+ "breasts": "melons",
+    "penis": "pp", 
+
+    "vagina": "pp", 
+
+    "dick": "D-",
+    "Dicking" : "D-ing",
+   "Motherfucker" : "mothaf",
+   "Cocksuckers" : "csuckers",
+
+    "cock": "pp", 
+
+    "pussy": "pp", 
+
+    "balls": "ball", 
+
+    "bitch": "beach", 
+
+    "Bitches": "beaches", 
+
+     "Booty": "butt", 
+
+"nipple": "mellons", 
+
+"boob": "mellons", 
+
+"tit": "mellons", 
+
+"virgin": "version", 
+
+"fucking": "f", 
+    "Fucker" : "f er",
+"Fuckers" : "f ers",
+
+
+
+"Squirt": "Sqr", 
+
+"Bra": "Br",
+
+"Kiss": "Ks", 
+
+"Pound": "Pnd", 
+
+"fucked": "f", 
+
+"cum": "come", 
+
+"ass": "butt", 
+
+"asshole": "A-hole", 
+
+"moan": "mmmm", 
+
+"shaft": " ", 
+
+"stroke": "slide ", 
+
+"lick": "lik", 
+
+"suck": "sck", 
+
+"lust": "lusssst", 
+
+"slut": "slot", 
+
+"blood": "bld", 
+
+"whore": "whr", 
+
+"porn": "pawn", 
+
+"rape": "rpe", 
+
+"fag": "fg", 
+
+"faggot": "fgot", 
+
+"retard": "retd", 
+
+"spic": "spk", 
+
+"coon": "cn", 
+
+"chink": "chk", 
+
+"nigger": "ngr", 
+
+"nigga": "nga", 
+
+"dyke": "dyk", 
+
+"kike": "kk", 
+
+"tranny": "trny", 
+
+"homo": "hmo", 
+            "homosexual": "homosecual", 
+
+"queer": "qer", 
+
+"gook": "gk", 
+
+"bastard": "bstrd", 
+
+"damn": "dmn", 
+
+"shit": "sheet", 
+
+"crap": "crp", 
+
+"piss": "pss", 
+
+"douche": "dche", 
+
+"anal": "anl", 
+
+"oral": "orl", 
+
+"blowjob": "blwjb", 
+
+"handjob": "hndjb", 
+
+"milf": "mlf", 
+
+"twink": "twk", 
+
+"twinkie": "twke", 
+
+"orgasm": "orgsm", 
+
+"masturbate": "mstrbte", 
+
+"masturbation": "mstrbtn", 
+
+"ejaculate": "ejclte", 
+
+"ejaculation": "ejcltn", 
+
+"clit": "clt", 
+
+"clitoris": "cltros", 
+
+"gonads": "gnds", 
+
+"pubic": "pbic", 
+
+"genital": "gntl", 
+
+"genitals": "gntls", 
+
+"fetish": "ftish", 
+
+"bondage": "bndge", 
+
+"dominatrix": "dmntrx", 
+
+"sodomize": "sdmze", 
+
+"sodomy": "sdmy", 
+
+"whorehouse": "whrehse", 
+
+"whoremonger": "whremngr", 
+
+"incest": "incst", 
+
+"necrophilia": "ncrphlia", 
+
+"bestiality": "bstlty", 
+
+"beastiality": "bstlty", 
+
+"pedophile": "pdphle", 
+
+"pedophilia": "pdphlia", 
+
+"zoophilia": "zphlia", 
+
+"child porn": "chld prn", 
+
+"child pornography": "chld prngrphy", 
+
+"hentai": "hntai", 
+
+"titty": "ttty", 
+
+"titties": "tties", 
+
+"boner": "bner", 
+
+"hard on": "hrd on", 
+
+"nude": "nde", 
+
+"nudity": "ndty", 
+
+"orgy": "orgy", 
+
+"gangbang": "gngbng", 
+
+"gang bang": "gng bng", 
+
+"bukkake": "bkkke", 
+
+"bukakke": "bkkke", 
+
+"vulva": "vlva", 
+
+"vulvas": "vlvas", 
+
+"labia": "lbia", 
+
+"labiaplasty": "lbplsty", 
+
+"penectomy": "pnctmy", 
+
+"penoplasty": "pnplsty", 
+
+"scrotum": "scrtm", 
+
+"testicle": "tstcl", 
+
+"testicles": "tstcls", 
+
+"foreskin": "frskn", 
+
+"smegma": "smgma", 
+
+"menstruate": "mnstrte", 
+
+"menstruation": "mnstrtn", 
+
+"period": "prd", 
+
+"ovulate": "ovlte", 
+
+"ovulation": "ovltn", 
+
+"uterus": "utrs", 
+
+"cervix": "crvx", 
+
+"cervical": "crvcl", 
+
+"endometrium": "ndmtrm", 
+
+"fallopian": "fllpn", 
+
+"fallopian tube": "fllpn tbe", 
+
+"ovary": "ovry", 
+
+"ovaries": "ovries", 
+
+"puberty": "pbrty", 
+
+"pubes": "pbz", 
+
+"pubic hair": "pbic hr", 
+
+"erect": "erct", 
+
+"erection": "erctn", 
+
+"conception": "cncptn", 
+
+"contraception": "cntrcptn", 
+
+"contraceptive": "cntrcptv", 
+
+"birth control": "brth cntrl", 
+
+"abortion": "abtn", 
+
+"miscarriage": "mscrge", 
+
+"pregnant": "prgnnt", 
+
+"pregnancy": "prgnncy", 
+
+"fetus": "fts", 
+
+"fetuses": "fts", 
+
+    "testes": "tsts", 
+
+"semen": "smn", 
+
+"testosterone": "tstrn", 
+
+"estrogen": "estrgn", 
+
+"progesterone": "prgstrn", 
+
+"puberty": "pbrty", 
+
+"pubescent": "pbscnt", 
+
+"erectile": "erctl", 
+
+"dysfunction": "dsfnctn", 
+
+"gonorrhea": "gnrrha", 
+
+"syphilis": "syphls", 
+
+"herpes": "hrps", 
+
+"chlamydia": "chlmda", 
+
+"hepatitis": "hptts", 
+
+"STD": "std", 
+
+"STI": "sti", 
+
+"contraception": "cntrcptn", 
+
+"contraceptive": "cntrcptv", 
+
+"hormone": "hrmne", 
+
+"menstrual": "mnstrl", 
+
+"cycle": "cycl", 
+
+"ovulation": "ovltn", 
+
+"ovary": "ovry", 
+
+"fertility": "frtlty", 
+
+"infertility": "nfrtlty", 
+
+"insemination": "nsmmtn", 
+
+"conception": "cncptn", 
+
+"pregnancy": "prgnncy", 
+
+"gestation": "gsttn", 
+
+"embryo": "mbyo", 
+
+"fetus": "fts", 
+
+"placenta": "plcnt", 
+
+"amniotic": "mntc", 
+
+"birth": "brth", 
+
+"labor": "lbr", 
+
+"delivery": "dlvry", 
+
+"postpartum": "pstprtm", 
+
+"lactation": "lcttn", 
+
+"nursing": "nrsng", 
+
+"midwife": "mdwf", 
+
+"obstetrician": "bsttrcn", 
+
+"gynecologist": "gynclgst", 
+
+"ultrasound": "ltrsnd", 
+
+"mammogram": "mmgrm", 
+
+"breastfeed": "brstfd", 
+
+"breastfeeding": "brstfdng", 
+
+"colostrum": "clstrm", 
+
+"mastitis": "mstts", 
+
+"nipple": "npl", 
+
+"breast": "brst", 
+
+"menopause": "mnpse", 
+
+"andropause": "ndrps", 
+
+"hysterectomy": "hstrctmy", 
+
+"vasectomy": "vsctmy", 
+
+"prostate": "prstt", 
+
+"scrotum": "scrtm", 
+
+"testicle": "tstcl", 
+
+"testes": "tsts", 
+
+"sperm": "sprm", 
+
+"semen": "smn", 
+
+"ovum": "ovm", 
+
+"ova": "ova", 
+
+"zygote": "zygt", 
+
+"embryo": "mbyo", 
+
+"blastocyst": "blstcyst", 
+
+"fallopian": "fllpn", 
+
+"cervix": "crvx", 
+
+"uterus": "utrs", 
+
+"vagina": "vgna", 
+
+"labia": "lbia", 
+
+"clitoris": "cltrs", 
+
+"perineum": "prnm", 
+
+"episiotomy": "psitmy", 
+
+"menstruate": "mnstrt", 
+
+"menstruation": "mnstrtn", 
+
+"period": "prd", 
+
+"ovulate": "ovlt", 
+
+"ovulation": "ovltn", 
+
+"contraception": "cntrcptn", 
+
+"contraceptive": "cntrcptv", 
+
+"infertility": "nfrtlty", 
+
+"insemination": "nsmmtn", 
+
+"gestation": "gsttn", 
+
+"placenta": "plcnt", 
+
+"amniotic": "mntc", 
+
+"delivery": "dlvry", 
+
+"postpartum": "pstprtm", 
+
+"lactation": "lcttn", 
+
+"obstetrician": "bsttrcn", 
+
+"gynecologist": "gynclgst", 
+
+"ultrasound": "ltrsnd", 
+
+"mammogram": "mmgrm", 
+
+"breastfeed": "brstfd", 
+
+"menopause": "mnpse", 
+
+"andropause": "ndrps", 
+
+"hysterectomy": "hstrctmy", 
+
+"vasectomy": "vsctmy", 
+
+"prostate": "prstt", 
+
+     "adultery": "adlt", 
+
+"fornication": "frnctn", 
+
+"sodomy": "sdmy", 
+
+"voyeur": "vyr", 
+
+"voyeurism": "vyrsm", 
+
+"aphrodisiac": "phrds", 
+
+"brothel": "brthl", 
+
+"stripper": "strpr", 
+
+"strip club": "strp clb", 
+
+"prostitution": "prsttn", 
+
+"escort": "scrt", 
+
+"gigolo": "ggl", 
+
+"hooker": "hkr", 
+
+"madam": "mdm", 
+
+"pimp": "pmp", 
+
+"sugar daddy": "sgr ddy", 
+
+"sugar baby": "sgr bby", 
+
+"mistress": "mstrs", 
+
+"courtesan": "crtsn", 
+
+"concubine": "cncbn", 
+
+"harem": "hrm", 
+
+"love hotel": "lv htl", 
+
+"orgasm": "orgsm", 
+
+"climax": "clmx", 
+
+"arousal": "arlsl", 
+
+"foreplay": "frply", 
+
+"intimate": "ntmt", 
+
+"seduce": "sduc", 
+
+"seduction": "sductn", 
+
+"sensual": "snsl", 
+
+"sexual": "sxl", 
+
+"sexually": "secually", 
+
+"sexuality": "secuality",
+
+"explicit": "xplct", 
+
+"erotic": "rtic", 
+
+"erotica": "rtca", 
+
+"arouse": "ars", 
+
+"stimulate": "stmlt", 
+
+"stimulation": "stmltn", 
+
+"titillate": "ttllt", 
+
+"titillation": "ttlltn", 
+
+"tantric": "tntrc", 
+
+"kama sutra": "km str", 
+
+"aphrodisiac": "phrds", 
+
+"fetish": "ftsh", 
+
+"kink": "knk", 
+
+"kinky": "knky", 
+
+"masochist": "mscst", 
+
+"masochism": "mscsm", 
+
+"sadist": "sdst", 
+
+"sadism": "sdsm", 
+
+"sadomasochism": "sdmscs", 
+
+"dominance": "dmnce", 
+
+"submission": "sbmsn", 
+
+"dominatrix": "dmntrx", 
+
+"submissive": "sbmssv", 
+
+"switch": "swch", 
+
+"bdsm": "bdsm", 
+
+"bondage": "bndge", 
+
+"discipline": "dspln", 
+
+"dominance": "dmnce", 
+
+"submission": "sbmsn", 
+
+"sadomasochism": "sdmscs", 
+
+"voyeur": "vyr", 
+
+"exhibitionism": "xhbtnsm", 
+
+"exhibitionist": "xhbtnst", 
+
+"incestuous": "ncsts", 
+
+"incest": "ncst", 
+
+"pedophile": "pdphle", 
+
+"pedophilia": "pdphlia", 
+
+"hebophilia": "hbp", 
+
+"paraphilia": "prphl", 
+
+"necrophilia": "ncrphl", 
+
+"bestiality": "bstlty", 
+
+"zoophilia": "zphl", 
+
+"child molestation": "chld mlsttn", 
+
+"molester": "mlstr", 
+
+"rape": "rpe", 
+
+"rapist": "rpst", 
+
+"sexual assault": "sxl slt", 
+
+"sexual harassment": "sxl hrssmnt", 
+
+"groping": "grpng", 
+
+"fondling": "fndlng", 
+
+"indecent exposure": "ndcnt xpsr", 
+
+"streaking": "strkng", 
+
+"peeping tom": "ppng tm", 
+
+"sexual abuse": "sxl bs", 
+
+
+
+"consensual": "cnsns", 
+
+"non-consensual": "ncnsns", 
+
+"penetration": "pntrtn", 
+
+"intercourse": "ntrcrs", 
+
+"coitus": "cts", 
+
+"cunnilingus": "cnlngs", 
+
+"fellatio": "fllt", 
+
+"anilingus": "nlg", 
+
+"autofellatio": "tfltl", 
+
+"tribadism": "trbsm", 
+
+"tribbing": "trbbng", 
+
+"scissoring": "scssrng", 
+
+"fisting": "fstng", 
+
+"mutual masturbation": "mtl mstrbtn", 
+
+"swinging": "swngng", 
+
+"threesome": "thrsm", 
+
+"foursome": "fursm", 
+
+"orgy": "orgy", 
+
+"gangbang": "gngbng", 
+
+"group sex": "grp sx", 
+
+"bukakke": "bkk", 
+
+"bukkake": "bkk", 
+
+"dildo": "dld", 
+
+"vibrator": "vbrtr", 
+
+"butt plug": "btt plg", 
+
+"anal beads": "nl bds", 
+
+"handcuffs": "hndcffs", 
+
+"whip": "whp", 
+
+"crop": "crp", 
+
+"gag": "gg", 
+
+"blindfold": "blndfld", 
+
+"ball gag": "bll gg", 
+
+"harness": "hrnss", 
+
+"chastity belt": "chstty blt", 
+
+"bondage gear": "bndg gr", 
+
+"leather": "lthr", 
+
+"latex": "ltx", 
+
+"rubber": "rbb", 
+
+"dominant": "dmnt", 
+
+"submissive": "sbmssv", 
+
+"switch": "swch", 
+                      
+"tits" : "tips" ,
+"Motherfuckers" : "mothafs" ,
+
+"slave": "slv", 
+
+"master": "mstr", 
+
+"mistress": "mstrs", 
+
+"sadist": "sdst", 
+
+"masochist": "mscst", 
+
+"sadomasochist": "sdmscs", 
+
+"erotic": "rtc", 
+
+"sexual": "sxl", 
+
+"sensual": "snsl", 
+
+"intimate": "ntmt", 
+
+"seductive": "sductv", 
+
+"titillating": "ttlltng", 
+
+"arousing": "rsng", 
+
+"stimulating": "stmltng", 
+
+"explicit": "xplct" ,
+
+"drug": "drag" ,
+
+"drugs": "drags" ,
+
+
+"cocaine": "ccane"
+        };
+
+        const specialCharacterMap = {
+            "À": "A", "Á": "A", "Â": "A", "Ã": "A", "Ä": "A", "Å": "A", "Ā": "A", "Ą": "A", "Ă": "A",
+            "Ç": "C", "Ć": "C", "Č": "C", "Ĉ": "C", "Ċ": "C",
+            "È": "E", "É": "E", "Ê": "E", "Ë": "E", "Ē": "E", "Ę": "E", "Ě": "E", "Ĕ": "E", "Ė": "E",
+            "Ì": "I", "Í": "I", "Î": "I", "Ï": "I", "Ī": "I", "Ĩ": "I", "Ĭ": "I", "Į": "I", "İ": "I",
+            "Ñ": "N", "Ń": "N", "Ň": "N", "Ņ": "N", "Ŋ": "N",
+            "Ò": "O", "Ó": "O", "Ô": "O", "Õ": "O", "Ö": "O", "Ō": "O", "Ő": "O", "Ø": "O", "Ŏ": "O",
+            "Ù": "U", "Ú": "U", "Û": "U", "Ü": "U", "Ū": "U", "Ů": "U", "Ű": "U", "Ŭ": "U", "Ũ": "U", "Ų": "U",
+            "Ý": "Y", "Ÿ": "Y", "Ŷ": "Y",
+            "Ź": "Z", "Ż": "Z", "Ž": "Z",
+            "Æ": "AE", "Ǽ": "AE", "ß": "SS",
+            "à": "a", "á": "a", "â": "a", "ã": "a", "ä": "a", "å": "a", "ā": "a", "ą": "a", "ă": "a",
+            "ç": "c", "ć": "c", "č": "c", "ĉ": "c", "ċ": "c",
+            "è": "e", "é": "e", "ê": "e", "ë": "e", "ē": "e", "ę": "e", "ě": "e", "ĕ": "e", "ė": "e",
+            "ì": "i", "í": "i", "î": "i", "ï": "i", "ī": "i", "ĩ": "i", "ĭ": "i", "į": "i",
+            "ñ": "n", "ń": "n", "ň": "n", "ņ": "n", "ŋ": "n",
+            "ò": "o", "ó": "o", "ô": "o", "õ": "o", "ö": "o", "ō": "o", "ő": "o", "ø": "o", "ŏ": "o",
+            "ù": "u", "ú": "u", "û": "u", "ü": "u", "ū": "u", "ů": "u", "ű": "u", "ŭ": "u", "ũ": "u", "ų": "u",
+            "ý": "y", "ÿ": "y", "ŷ": "y",
+            "ź": "z", "ż": "z", "ž": "z",
+            "æ": "ae"
+        };
+
+        const suffixes = ["ing", "ed", "es", "s"];
+
+        function replaceSpecialCharacters(inputText) {
+            return inputText.replace(/[ÀÁÂÃÄÅĀĄĂÇĆČĈĊÈÉÊËĒĘĚĔĖÌÍÎÏĪĨĬĮİÑŃŇŅŊÒÓÔÕÖŌŐØŎÙÚÛÜŪŮŰŬŨŲÝŸŶŹŻŽÆǼßàáâãäåāąăçćčĉċèéêëēęěĕėìíîïīĩĭįñńňņŋòóôõöōőøŏùúûüūůűŭũųýÿŷźżžæ]/g, (match) => {
+                return specialCharacterMap[match] || match;
+            });
+        }
+
+        function replaceWordsAutomatically(inputText) {
+            return inputText.replace(/\b([a-zA-Z]+)\b/g, (word) => {
+                const baseWord = word.toLowerCase();
+                const replacement = wordMap[baseWord] || word;
+                const matchedSuffix = suffixes.find((suffix) => word.endsWith(suffix));
+                if (matchedSuffix && wordMap[baseWord.slice(0, -matchedSuffix.length)]) {
+                    return wordMap[baseWord.slice(0, -matchedSuffix.length)] + matchedSuffix;
+                }
+                return replacement;
+            });
+        }
+
+        function cleanUpText(inputText) {
+            inputText = inputText
+                .replace(/[~=\[\]\{\}]+/g, ' ')
+                .replace(/-{2,}/g, ' ')
+                .replace(/—{2,}/g, ' ')
+                .replace(/\.\.\.+/g, '.')
+                .replace(/_{2,}/g, ' ')
+                .replace(/\b\d+\.\s+/g, ' ')
+                .replace(/\bChapter Text\b/gi, '')
+                .replace(/\s+$/gm, '');
+               
+            return inputText;
+        }
+
+        function splitTextWithSpacing() {
+            let inputText = document.getElementById('inputText').value;
+
+            inputText = replaceSpecialCharacters(inputText);
+            inputText = cleanUpText(inputText);
+            inputText = replaceWordsAutomatically(inputText);
+
+            const chunkSize = 7600;
+            chunks = [];
+            let currentPosition = 0;
+
+            while (currentPosition < inputText.length) {
+                let nextChunkEnd = currentPosition + chunkSize;
+
+                if (nextChunkEnd < inputText.length) {
+                    let lastSpace = inputText.lastIndexOf(' ', nextChunkEnd);
+                    nextChunkEnd = lastSpace > currentPosition ? lastSpace : nextChunkEnd;
+                }
+
+                chunks.push(inputText.slice(currentPosition, nextChunkEnd).trim());
+                currentPosition = nextChunkEnd;
+            }
+
+            if (chunks.length > 0) {
+                currentChunkIndex = 0;
+                displayCurrentChunk();
+            }
+        }
+
+        function copyEntireText() {
+            const allText = chunks.join('\n\n');
+            const tempTextarea = document.createElement('textarea');
+            tempTextarea.value = allText;
+            document.body.appendChild(tempTextarea);
+            tempTextarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextarea);
+            alert("All text copied to clipboard!");
+        }
+
+        function displayCurrentChunk() {
+            const outputContainer = document.getElementById('outputContainer');
+            outputContainer.innerHTML = '';
+
+            if (chunks.length > 0) {
+                const chunkText = document.createElement('p');
+                chunkText.textContent = chunks[currentChunkIndex];
+                chunkText.style.whiteSpace = "pre-wrap";
+                outputContainer.appendChild(chunkText);
+
+                const navigationDiv = document.createElement('div');
+                navigationDiv.classList.add('chunk-navigation');
+
+                const prevButton = document.createElement('button');
+                prevButton.textContent = 'Previous';
+                prevButton.disabled = currentChunkIndex === 0;
+                prevButton.onclick = () => {
+                    if (currentChunkIndex > 0) {
+                        currentChunkIndex--;
+                        displayCurrentChunk();
+                    }
+                };
+                navigationDiv.appendChild(prevButton);
+
+                const copyButton = document.createElement('button');
+                copyButton.textContent = 'Copy Chunk';
+                copyButton.onclick = () => {
+                    copyChunkToClipboard(chunks[currentChunkIndex]);
+                };
+                navigationDiv.appendChild(copyButton);
+
+                if (currentChunkIndex < chunks.length - 1) {
+                    const nextButton = document.createElement('button');
+                    nextButton.textContent = 'Next';
+                    nextButton.onclick = () => {
+                        if (currentChunkIndex < chunks.length - 1) {
+                            currentChunkIndex++;
+                            displayCurrentChunk();
+                        }
+                    };
+                    navigationDiv.appendChild(nextButton);
+                }
+
+                const chunkInfo = document.createElement('div');
+                chunkInfo.className = 'chunk-info';
+                chunkInfo.textContent = `Chunk ${currentChunkIndex + 1} of ${chunks.length}`;
+
+                outputContainer.appendChild(chunkInfo);
+                outputContainer.appendChild(navigationDiv);
+            }
+        }
+
+        function copyChunkToClipboard(chunk) {
+            const tempTextarea = document.createElement('textarea');
+            tempTextarea.value = chunk;
+            document.body.appendChild(tempTextarea);
+            tempTextarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextarea);
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const toggleButton = document.querySelector('.dark-mode-toggle');
+            toggleButton.classList.toggle('dark-mode');
+        }
+    </script>
+</body>
