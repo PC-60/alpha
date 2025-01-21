@@ -1036,6 +1036,7 @@
                 .replace(/\.\.\.+/g, '.')
                 .replace(/_{2,}/g, ' ')
                 .replace(/\b\d+\.\s+/g, ' ')
+                .replace(/\*{2,}/g, ' ') 
                 .replace(/\bChapter Text\b/gi, '')
                 .replace(/\s+$/gm, '');
                
