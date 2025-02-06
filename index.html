@@ -977,9 +977,14 @@
 "drug": "drag" ,
 
 "drugs": "drags" ,
+"slutty": "salty",
+    "Cunts": "cants",
+    "Whores": "whrs",
+    "Dickwad": "d wad",
+    "Sluts": "slts",
 
-
-"cocaine": "ccane"
+"cocaine": "ccane",
+            "Dickhead": "d head"
         };
 
         const specialCharacterMap = {
@@ -1036,7 +1041,9 @@
         .replace(/\*{2,}/g, ' ')
         .replace(/\*+/g, ' ') // Removes continuous sequences of asterisks
         .replace(/\bChapter Text\b/gi, '')
-        .replace(/\s+$/gm, '');
+        .replace(/\s+$/gm, '')
+        .replace(/[*~{}\[\]\(\)]/g, '');
+
 
     return inputText;
 }
