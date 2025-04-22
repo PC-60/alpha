@@ -1007,7 +1007,7 @@
             "ù": "u", "ú": "u", "û": "u", "ü": "u", "ū": "u", "ů": "u", "ű": "u", "ŭ": "u", "ũ": "u", "ų": "u",
             "ý": "y", "ÿ": "y", "ŷ": "y",
             "ź": "z", "ż": "z", "ž": "z",
-            "æ": "ae", "&":"and "
+            "æ": "ae"
         };
 
         const suffixes = ["ing", "ed", "es", "s"];
@@ -1043,6 +1043,7 @@
         .replace(/\bChapter Text\b/gi, '')
         .replace(/\s+$/gm, '')
         .replace(/[*~{}\[\]\(\)]/g, '');
+        .replace(/&/g, ' ');
 
 
     return inputText;
