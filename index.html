@@ -1042,8 +1042,8 @@
         .replace(/\*+/g, ' ') // Removes continuous sequences of asterisks
         .replace(/\bChapter Text\b/gi, '')
         .replace(/\s+$/gm, '')
-        .replace(/[*~{}\[\]\(\)]/g, '');
-        .replace(/&/g, ' ');
+        .replace(/[*~{}\[\]\(\)]/g, '')
+        .replace(/&/g, 'and ');
 
 
     return inputText;
